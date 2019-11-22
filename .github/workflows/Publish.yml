@@ -1,0 +1,26 @@
+name: .NET Core
+
+on: 
+  release:
+    types: [published]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.108
+    - name: Build
+      run: dotnet build --configuration Release
+    - name: Test
+      run: dotnet test
+    - name: Pack
+      run: dotnet pack ./src/ThreeFourteen.FluentHttpClient/ThreeFourteen.FluentHttpClient.csproj --configuration Release -o NuGetPackages /p:Version=${GITHUB_REF}
+    - name: Publish
+      run: dotnet nuget push ./src/ThreeFourteen.FluentHttpClient/NuGetPackages/* -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+
