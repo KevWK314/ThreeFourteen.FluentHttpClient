@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    
+    <packageId>ThreeFourteen.FluentHttpClient</packageId>
+    <description>A comfy wrapper around HttpClient and HttpClientFactory</description>
+    <title>Fluent HttpClient</title>
+    <authors>kevwk314</authors>
+    <packageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</packageLicenseUrl>
+    <packageProjectUrl>https://github.com/KevWK314/ThreeFourteen.FluentHttpClient</packageProjectUrl>
+    <packageRequireLicenseAcceptance>false</packageRequireLicenseAcceptance>
+    <packageTags>httpClient client fluent</packageTags>
+    
   </PropertyGroup>
 
   <ItemGroup>
