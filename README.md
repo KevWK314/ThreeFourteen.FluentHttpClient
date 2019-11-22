@@ -1,4 +1,4 @@
 # ThreeFourteen.FluentHttpClient
 A wrapper around HttpClient using HttpClientFactory
 
-[![Actions Status](https://github.com/{owner}/{repo}/workflows/{workflow_name}/badge.svg)](https://github.com/{owner}/{repo}/actions)
+https://github.com/KevWK314/ThreeFourteen.FluentHttpClient/workflows/BuildAndTest/badge.svg
