@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29403.142
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThreeFourteen.FluentHttpClient", "src\ThreeFourteen.FluentHttpClient\ThreeFourteen.FluentHttpClient.csproj", "{2802E4C1-3875-44BF-BADE-7F9E0924F92E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreeFourteen.FluentHttpClient.Sample.Console", "src\ThreeFourteen.FluentHttpClient.Sample.Console\ThreeFourteen.FluentHttpClient.Sample.Console.csproj", "{2D0CAAC3-6A0A-493F-9C27-EF2C7DB814F1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2802E4C1-3875-44BF-BADE-7F9E0924F92E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2802E4C1-3875-44BF-BADE-7F9E0924F92E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2802E4C1-3875-44BF-BADE-7F9E0924F92E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2802E4C1-3875-44BF-BADE-7F9E0924F92E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D0CAAC3-6A0A-493F-9C27-EF2C7DB814F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D0CAAC3-6A0A-493F-9C27-EF2C7DB814F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D0CAAC3-6A0A-493F-9C27-EF2C7DB814F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D0CAAC3-6A0A-493F-9C27-EF2C7DB814F1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B39B588B-B428-438C-B44C-82B14D78B224}
+	EndGlobalSection
+EndGlobal
