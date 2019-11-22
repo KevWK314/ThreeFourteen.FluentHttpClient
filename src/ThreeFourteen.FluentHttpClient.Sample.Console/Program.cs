@@ -9,26 +9,26 @@ namespace FluentHttpClient.Sample.Console
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             var factory = FluentHttpClientFactory.Create(new ClientFactory());
             var resreqClient = factory.Create("Reqres");
 
-            var user = await resreqClient
+            var user = resreqClient
                 .Get("api/users/2")
                 .OnRequest(r => LogRequestDetails(resreqClient.Name, r))
                 .OnResponse(r => LogResponseDetails(resreqClient.Name, r))
-                .ExecuteAsync<User>();
+                .ExecuteAsync<User>().Result;
 
             System.Console.WriteLine($"Get: {user}");
             System.Console.WriteLine();
 
             var request = new CreateUserRequest { Name = "Tim", Job = "TheBoss" };
-            var createdUser = await resreqClient
+            var createdUser = resreqClient
                 .Post("api/users")
                 .OnRequest(r => LogRequestDetails(resreqClient.Name, r))
                 .OnResponse(r => LogResponseDetails(resreqClient.Name, r))
-                .ExecuteAsync<CreateUserRequest, CreateUserResponse>(request);
+                .ExecuteAsync<CreateUserRequest, CreateUserResponse>(request).Result;
 
             System.Console.WriteLine($"Post: {createdUser}");
             System.Console.ReadKey();
