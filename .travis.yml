@@ -1,0 +1,13 @@
+language: csharp
+mono: none
+dotnet: 2.2
+script:
+  - dotnet restore
+  - dotnet build ./ThreeFourteen.FluentHttpClient.sln
+deploy:
+  provider: script
+  skip_cleanup: true
+  on:
+    tags: true
+  script: 
+    - dotnet pack ./src/ThreeFourteen.FluentHttpClient -c Release /p:Version=$TRAVIS_TAG && dotnet nuget push ./src/ThreeFourteen.FluentHttpClient/bin/Release/ThreeFourteen.FluentHttpClient.$TRAVIS_TAG.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
