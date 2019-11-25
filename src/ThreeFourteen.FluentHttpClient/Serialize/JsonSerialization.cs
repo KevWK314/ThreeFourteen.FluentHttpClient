@@ -3,7 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace FluentHttpClient.Serialize
+namespace ThreeFourteen.FluentHttpClient.Serialize
 {
     public class JsonSerialization : ISerialization
     {

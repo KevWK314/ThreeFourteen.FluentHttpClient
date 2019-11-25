@@ -1,8 +1,6 @@
-﻿using System;
-using System.Net.Http;
-using FluentHttpClient.Serialize;
+﻿using ThreeFourteen.FluentHttpClient.Serialize;
 
-namespace FluentHttpClient
+namespace ThreeFourteen.FluentHttpClient
 {
     public static class RequestBuilderExtensions
     {

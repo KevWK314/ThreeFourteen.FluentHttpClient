@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace FluentHttpClient.Serialize
+namespace ThreeFourteen.FluentHttpClient.Serialize
 {
     public interface ISerialization
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace FluentHttpClient
+namespace ThreeFourteen.FluentHttpClient.Factory
 {
     public interface IFluentHttpClientFactoryBuilder
     {

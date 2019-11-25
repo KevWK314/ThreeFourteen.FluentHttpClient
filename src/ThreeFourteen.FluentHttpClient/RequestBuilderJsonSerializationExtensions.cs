@@ -1,7 +1,7 @@
-﻿using FluentHttpClient.Serialize;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using ThreeFourteen.FluentHttpClient.Serialize;
 
-namespace FluentHttpClient
+namespace ThreeFourteen.FluentHttpClient
 {
     public static class RequestBuilderJsonSerializationExtensions
     {

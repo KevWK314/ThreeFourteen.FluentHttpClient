@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
+using ThreeFourteen.FluentHttpClient.Factory;
 
-namespace FluentHttpClient.Sample.Console
+namespace ThreeFourteen.FluentHttpClient.Sample.Console
 {
     class Program
     {

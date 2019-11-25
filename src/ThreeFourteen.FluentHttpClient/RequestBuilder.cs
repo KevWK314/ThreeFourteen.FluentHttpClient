@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentHttpClient.Serialize;
+using ThreeFourteen.FluentHttpClient.Serialize;
 
-namespace FluentHttpClient
+namespace ThreeFourteen.FluentHttpClient
 {
     public partial class RequestBuilder
     {

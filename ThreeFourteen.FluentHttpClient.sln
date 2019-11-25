@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29403.142
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThreeFourteen.FluentHttpClient", "src\ThreeFourteen.FluentHttpClient\ThreeFourteen.FluentHttpClient.csproj", "{2802E4C1-3875-44BF-BADE-7F9E0924F92E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreeFourteen.FluentHttpClient.Sample.Console", "src\ThreeFourteen.FluentHttpClient.Sample.Console\ThreeFourteen.FluentHttpClient.Sample.Console.csproj", "{2D0CAAC3-6A0A-493F-9C27-EF2C7DB814F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThreeFourteen.FluentHttpClient.Sample.Console", "src\ThreeFourteen.FluentHttpClient.Sample.Console\ThreeFourteen.FluentHttpClient.Sample.Console.csproj", "{2D0CAAC3-6A0A-493F-9C27-EF2C7DB814F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreeFourteen.FluentHttpClient.Factory", "src\ThreeFourteen.FluentHttpClient.Factory\ThreeFourteen.FluentHttpClient.Factory.csproj", "{D95F80AE-75FE-4474-9AF1-493E29296142}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{2D0CAAC3-6A0A-493F-9C27-EF2C7DB814F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D0CAAC3-6A0A-493F-9C27-EF2C7DB814F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D0CAAC3-6A0A-493F-9C27-EF2C7DB814F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D95F80AE-75FE-4474-9AF1-493E29296142}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D95F80AE-75FE-4474-9AF1-493E29296142}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D95F80AE-75FE-4474-9AF1-493E29296142}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D95F80AE-75FE-4474-9AF1-493E29296142}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

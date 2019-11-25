@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace FluentHttpClient
+namespace ThreeFourteen.FluentHttpClient
 {
     public static class FluentHttpClientExtensions
     {

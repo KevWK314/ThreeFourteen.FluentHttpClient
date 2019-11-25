@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace FluentHttpClient
+namespace ThreeFourteen.FluentHttpClient
 {
     public partial class RequestBuilder
     {

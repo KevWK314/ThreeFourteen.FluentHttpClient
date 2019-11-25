@@ -1,4 +1,4 @@
-﻿namespace FluentHttpClient
+﻿namespace ThreeFourteen.FluentHttpClient
 {
     public static class Headers
     {

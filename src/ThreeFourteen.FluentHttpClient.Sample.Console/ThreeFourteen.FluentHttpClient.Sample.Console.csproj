@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ThreeFourteen.FluentHttpClient\ThreeFourteen.FluentHttpClient.csproj" />
+    <ProjectReference Include="..\ThreeFourteen.FluentHttpClient.Factory\ThreeFourteen.FluentHttpClient.Factory.csproj" />
   </ItemGroup>
 
 </Project>

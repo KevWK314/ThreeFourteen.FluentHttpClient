@@ -1,4 +1,4 @@
-﻿namespace FluentHttpClient.Serialize
+﻿namespace ThreeFourteen.FluentHttpClient.Serialize
 {
     public static class Serialization
     {

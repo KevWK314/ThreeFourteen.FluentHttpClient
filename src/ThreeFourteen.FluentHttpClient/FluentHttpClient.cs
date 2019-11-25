@@ -2,11 +2,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FluentHttpClient
+namespace ThreeFourteen.FluentHttpClient
 {
     public interface IFluentHttpClient
     {
         string Name { get; }
+
         FluentHttpClientConfiguration Configuration { get; }
 
         Task<HttpResponseMessage> SendAsync(HttpRequestMessage requestMessage, HttpCompletionOption completionOption, CancellationToken cancellationToken);
@@ -16,7 +17,12 @@ namespace FluentHttpClient
     {
         private readonly HttpClient _client;
 
-        internal FluentHttpClient(string name, HttpClient client, FluentHttpClientConfiguration configuration)
+        public FluentHttpClient(string name, HttpClient client)
+            : this(name, client, null)
+        {
+        }
+
+        public FluentHttpClient(string name, HttpClient client, FluentHttpClientConfiguration configuration)
         {
             _client = client;
 
@@ -31,16 +37,6 @@ namespace FluentHttpClient
         public Task<HttpResponseMessage> SendAsync(HttpRequestMessage requestMessage, HttpCompletionOption completionOption, CancellationToken cancellationToken)
         {
             return _client.SendAsync(requestMessage, completionOption, cancellationToken);
-        }
-
-        public static IFluentHttpClient Create(string name, HttpClient client)
-        {
-            return new FluentHttpClient(name, client, null);
-        }
-
-        public static IFluentHttpClient Create(string name, HttpClient client, FluentHttpClientConfiguration configuration)
-        {
-            return new FluentHttpClient(name, client, configuration);
         }
     }
 }

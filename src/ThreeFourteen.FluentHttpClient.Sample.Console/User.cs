@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace FluentHttpClient.Sample.Console
+namespace ThreeFourteen.FluentHttpClient.Sample.Console
 {
     public class User
     {
