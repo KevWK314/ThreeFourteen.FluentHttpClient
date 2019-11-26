@@ -18,19 +18,5 @@ namespace ThreeFourteen.FluentHttpClient
 
             return requestBuilder;
         }
-
-        public static RequestBuilder WithJsonStreamSerializer(this RequestBuilder requestBuilder)
-        {
-            requestBuilder.UpdateConfiguration(c => c.Serialization = new JsonStreamSerialization());
-
-            return requestBuilder;
-        }
-
-        public static RequestBuilder WithJsonStreamSerializer(this RequestBuilder requestBuilder, JsonSerializerSettings settings)
-        {
-            requestBuilder.UpdateConfiguration(c => c.Serialization = new JsonStreamSerialization(settings));
-
-            return requestBuilder;
-        }
     }
 }

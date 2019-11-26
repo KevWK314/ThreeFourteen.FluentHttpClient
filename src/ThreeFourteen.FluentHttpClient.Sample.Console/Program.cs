@@ -12,22 +12,22 @@ namespace ThreeFourteen.FluentHttpClient.Sample.Console
         static void Main(string[] args)
         {
             var factory = FluentHttpClientFactory.Create(new ClientFactory());
-            var resreqClient = factory.Create("Reqres");
+            var client = factory.Create("Reqres");
 
-            var user = resreqClient
+            var user = client
                 .Get("api/users/2")
-                .OnRequest(r => LogRequestDetails(resreqClient.Name, r))
-                .OnResponse(r => LogResponseDetails(resreqClient.Name, r))
+                .OnRequest(r => LogRequestDetails(client.Name, r))
+                .OnResponse(r => LogResponseDetails(client.Name, r))
                 .ExecuteAsync<User>().Result;
 
             System.Console.WriteLine($"Get: {user}");
             System.Console.WriteLine();
 
             var request = new CreateUserRequest { Name = "Tim", Job = "TheBoss" };
-            var createdUser = resreqClient
+            var createdUser = client
                 .Post("api/users")
-                .OnRequest(r => LogRequestDetails(resreqClient.Name, r))
-                .OnResponse(r => LogResponseDetails(resreqClient.Name, r))
+                .OnRequest(r => LogRequestDetails(client.Name, r))
+                .OnResponse(r => LogResponseDetails(client.Name, r))
                 .ExecuteAsync<CreateUserRequest, CreateUserResponse>(request).Result;
 
             System.Console.WriteLine($"Post: {createdUser}");
