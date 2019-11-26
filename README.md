@@ -1,7 +1,7 @@
 ![](https://github.com/KevWK314/ThreeFourteen.FluentHttpClient/workflows/BuildAndTest/badge.svg)
 
-# ThreeFourteen.FluentHttpClient
-A wrapper around HttpClient using HttpClientFactory.
+# ThreeFourteen FluentHttpClient
+A comfy wrapper around HttpClient using HttpClientFactory.
 
 ## FluentHttpClient
 I've found working with HttpClient is easy enough but very repetitive. Everyone doing the same thing over and over. Serealise, deserialise, add headers, add authentication. And every slight change to the flow or serialisation approach requires a new wrapper class. It's not flexible.
@@ -41,3 +41,8 @@ It's possible to specify basic configuration when creating the client (in the co
 - EnsureSuccessStatusCode - The default is true. [This will force an exception](https://docs.microsoft.com/en-us/uwp/api/windows.web.http.httpresponsemessage.ensuresuccessstatuscode) to be thrown when the response is not a success (in the 200 range).
 - HttpCompletionOption - Used when sending request and [indicates when the response is complete](https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpcompletionoption).
 - CancellationToken - Default is none. In fairness this has less value at the client level and more at the request level.
+
+## P.S. 
+
+This is very much a work in progress. Please feel free to put forward any changes you think will add value. If you find yourself repeating the same thing over and over, it might just belong here.
+
