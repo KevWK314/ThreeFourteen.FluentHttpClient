@@ -1,18 +1,10 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ThreeFourteen.FluentHttpClient
 {
-    public interface IFluentHttpClient
-    {
-        string Name { get; }
-
-        FluentHttpClientConfiguration Configuration { get; }
-
-        Task<HttpResponseMessage> SendAsync(HttpRequestMessage requestMessage, HttpCompletionOption completionOption, CancellationToken cancellationToken);
-    }
-
     public class FluentHttpClient : IFluentHttpClient
     {
         private readonly HttpClient _client;
@@ -33,6 +25,8 @@ namespace ThreeFourteen.FluentHttpClient
         public string Name { get; }
 
         public FluentHttpClientConfiguration Configuration { get; set; }
+
+        public IList<IMessageListener> Listeners { get; } = new List<IMessageListener>();
 
         public Task<HttpResponseMessage> SendAsync(HttpRequestMessage requestMessage, HttpCompletionOption completionOption, CancellationToken cancellationToken)
         {

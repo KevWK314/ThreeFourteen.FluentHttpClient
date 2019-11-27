@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,8 +15,7 @@ namespace ThreeFourteen.FluentHttpClient
         protected readonly HttpMethod HttpMethod;
 
         protected FluentHttpClientConfiguration Configuration = new FluentHttpClientConfiguration();
-        protected List<Action<HttpRequestMessage>> RequestMessageActions = new List<Action<HttpRequestMessage>>();
-        protected List<Action<HttpResponseMessage>> ResponseMessageActions = new List<Action<HttpResponseMessage>>();
+        protected List<IMessageListener> Listeners = new List<IMessageListener>();
 
         public RequestBuilder(IFluentHttpClient client, string uri, HttpMethod httpMethod)
         {
@@ -30,15 +30,9 @@ namespace ThreeFourteen.FluentHttpClient
             return this;
         }
 
-        public RequestBuilder OnRequest(Action<HttpRequestMessage> action)
+        public RequestBuilder AddMessageListener(IMessageListener messageListener)
         {
-            RequestMessageActions.Add(action);
-            return this;
-        }
-
-        public RequestBuilder OnResponse(Action<HttpResponseMessage> action)
-        {
-            ResponseMessageActions.Add(action);
+            Listeners.Add(messageListener);
             return this;
         }
 
@@ -50,14 +44,20 @@ namespace ThreeFourteen.FluentHttpClient
                 Configuration.CancellationToken ?? Client.Configuration.CancellationToken ?? CancellationToken.None);
         }
 
-        protected void ProcessRequest(HttpRequestMessage requestMessage)
+        protected async Task ProcessRequest(HttpRequestMessage requestMessage)
         {
-            RequestMessageActions.ForEach(configure => configure?.Invoke(requestMessage));
+            foreach (var listener in Client.Listeners.Concat(Listeners))
+            {
+                await listener.OnRequestMessage(requestMessage);
+            }
         }
 
-        protected void ProcessResponse(HttpResponseMessage responseMessage)
+        protected async Task ProcessResponse(HttpResponseMessage responseMessage)
         {
-            ResponseMessageActions.ForEach(configure => configure?.Invoke(responseMessage));
+            foreach (var listener in Client.Listeners.Concat(Listeners))
+            {
+                await listener.OnResponseMessage(responseMessage);
+            }
 
             if (Configuration.EnsureSuccessStatusCode ?? Client.Configuration.EnsureSuccessStatusCode ?? true)
                 responseMessage.EnsureSuccessStatusCode();

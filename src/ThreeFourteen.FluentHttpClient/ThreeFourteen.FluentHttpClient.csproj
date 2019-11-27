@@ -10,7 +10,7 @@
     <packageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</packageLicenseUrl>
     <packageProjectUrl>https://github.com/KevWK314/ThreeFourteen.FluentHttpClient</packageProjectUrl>
     <packageRequireLicenseAcceptance>false</packageRequireLicenseAcceptance>
-    <packageTags>httpClient client fluent</packageTags>
+    <packageTags>httpClient client fluent fluenthttpclient</packageTags>
     
   </PropertyGroup>
 
