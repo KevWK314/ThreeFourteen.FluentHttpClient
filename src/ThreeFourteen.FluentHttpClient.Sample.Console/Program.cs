@@ -33,6 +33,7 @@ namespace ThreeFourteen.FluentHttpClient.Sample.Console
             var request = new CreateUserRequest { Name = "Tim", Job = "TheBoss" };
             var postResponse = await client
                 .Post("api/users")
+                .WithHeader("User-Agent", "TheComputer")
                 .OnRequest(r => LogRequestDetails(client.Name, r))
                 .OnResponse(r => LogResponseDetails(client.Name, r))
                 .ExecuteAsync<CreateUserRequest, CreateUserResponse>(request);
@@ -40,18 +41,27 @@ namespace ThreeFourteen.FluentHttpClient.Sample.Console
             System.Console.WriteLine($"Post: {postResponse.Result}");
         }
 
-        static void LogRequestDetails(string name, HttpRequestMessage requestMessage)
+        static async Task LogRequestDetails(string name, HttpRequestMessage requestMessage)
         {
-            requestMessage.Content?.LoadIntoBufferAsync().Wait();
+            if (requestMessage?.Content == null) 
+                return;
 
-            var contentSize = requestMessage.Content?.ReadAsByteArrayAsync().Result.Length / (double)1024 ?? 0d;
+            requestMessage.Content.LoadIntoBufferAsync().Wait();
+            var byteArray = await requestMessage.Content.ReadAsByteArrayAsync();
+            var contentSize = byteArray.Length / (double)1024;
+
             System.Console.WriteLine($"{name} Request ({requestMessage.Method} {requestMessage.RequestUri}): content={contentSize:0.00}kb");
         }
 
-        static void LogResponseDetails(string name, HttpResponseMessage responseMessage)
+        static async Task LogResponseDetails(string name, HttpResponseMessage responseMessage)
         {
+            if (responseMessage?.Content == null)
+                return;
+
             responseMessage.Content?.LoadIntoBufferAsync().Wait();
-            var contentSize = responseMessage.Content?.ReadAsByteArrayAsync().Result.Length / (double)1024 ?? 0d;
+            var byteArray = await responseMessage.Content.ReadAsByteArrayAsync();
+            var contentSize = byteArray.Length / (double)1024;
+
             System.Console.WriteLine($"{name} Response: status={responseMessage.StatusCode}, content={contentSize:0.00}kb");
         }
     }

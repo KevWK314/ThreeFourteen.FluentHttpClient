@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using ThreeFourteen.FluentHttpClient.Serialize;
 
@@ -45,6 +46,20 @@ namespace ThreeFourteen.FluentHttpClient
         public static RequestBuilder WithSerializer(this RequestBuilder requestBuilder, ISerialization serialization)
         {
             requestBuilder.UpdateConfiguration(c => c.Serialization = serialization);
+
+            return requestBuilder;
+        }
+
+        public static RequestBuilder WithAuthentication(this RequestBuilder requestBuilder, string scheme)
+        {
+            requestBuilder.OnRequest(r => r.Headers.Authorization = new AuthenticationHeaderValue(scheme));
+
+            return requestBuilder;
+        }
+
+        public static RequestBuilder WithAuthentication(this RequestBuilder requestBuilder, string scheme, string parameter)
+        {
+            requestBuilder.OnRequest(r => r.Headers.Authorization = new AuthenticationHeaderValue(scheme, parameter));
 
             return requestBuilder;
         }
