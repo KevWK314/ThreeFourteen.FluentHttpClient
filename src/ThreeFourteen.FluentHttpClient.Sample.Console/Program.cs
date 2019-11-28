@@ -11,27 +11,33 @@ namespace ThreeFourteen.FluentHttpClient.Sample.Console
     {
         static void Main(string[] args)
         {
+            TryItOut().Wait();
+
+            System.Console.ReadKey();
+        }
+
+        static async Task TryItOut()
+        {
             var factory = FluentHttpClientFactory.Create(new ClientFactory());
             var client = factory.Create("Reqres");
 
-            var user = client
+            var getResponse = await client
                 .Get("api/users/2")
                 .OnRequest(r => LogRequestDetails(client.Name, r))
                 .OnResponse(r => LogResponseDetails(client.Name, r))
-                .ExecuteAsync<User>().Result;
+                .ExecuteAsync<User>();
 
-            System.Console.WriteLine($"Get: {user}");
+            System.Console.WriteLine($"Get: {getResponse.Result}");
             System.Console.WriteLine();
 
             var request = new CreateUserRequest { Name = "Tim", Job = "TheBoss" };
-            var createdUser = client
+            var postResponse = await client
                 .Post("api/users")
                 .OnRequest(r => LogRequestDetails(client.Name, r))
                 .OnResponse(r => LogResponseDetails(client.Name, r))
-                .ExecuteAsync<CreateUserRequest, CreateUserResponse>(request).Result;
+                .ExecuteAsync<CreateUserRequest, CreateUserResponse>(request);
 
-            System.Console.WriteLine($"Post: {createdUser}");
-            System.Console.ReadKey();
+            System.Console.WriteLine($"Post: {postResponse.Result}");
         }
 
         static void LogRequestDetails(string name, HttpRequestMessage requestMessage)

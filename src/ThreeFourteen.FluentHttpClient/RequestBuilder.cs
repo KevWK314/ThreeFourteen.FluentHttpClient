@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,43 +11,58 @@ namespace ThreeFourteen.FluentHttpClient
 {
     public partial class RequestBuilder
     {
-        protected readonly IFluentHttpClient Client;
-        protected readonly string Uri;
-        protected readonly HttpMethod HttpMethod;
+        private readonly IFluentHttpClient _client;
+        private readonly string _uri;
+        private readonly HttpMethod _httpMethod;
 
-        protected FluentHttpClientConfiguration Configuration = new FluentHttpClientConfiguration();
-        protected List<IMessageListener> Listeners = new List<IMessageListener>();
+        private readonly FluentHttpClientConfiguration _configuration = new FluentHttpClientConfiguration();
+        private readonly List<IMessageListener> _listeners = new List<IMessageListener>();
+        private readonly Dictionary<string, string> _parameters = new Dictionary<string, string>();
 
         public RequestBuilder(IFluentHttpClient client, string uri, HttpMethod httpMethod)
         {
-            HttpMethod = httpMethod;
-            Client = client;
-            Uri = uri;
+            if (client == null) throw new ArgumentNullException(nameof(client));
+
+            _httpMethod = httpMethod;
+            _client = client;
+            _uri = uri;
         }
 
         public RequestBuilder UpdateConfiguration(Action<FluentHttpClientConfiguration> update)
         {
-            update?.Invoke(Configuration);
+            update?.Invoke(_configuration);
             return this;
         }
 
         public RequestBuilder AddMessageListener(IMessageListener messageListener)
         {
-            Listeners.Add(messageListener);
+            if (messageListener == null) throw new ArgumentNullException(nameof(messageListener));
+
+            _listeners.Add(messageListener);
+            return this;
+        }
+
+        public RequestBuilder AddQueryParameter(string key, string value)
+        {
+            if (string.IsNullOrWhiteSpace(key)) throw new ArgumentException(nameof(key));
+            if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException(nameof(value));
+
+            _parameters[WebUtility.UrlEncode(key) ?? string.Empty] = WebUtility.UrlEncode(value);
+
             return this;
         }
 
         protected Task<HttpResponseMessage> SendAsync(HttpRequestMessage requestMessage)
         {
-            return Client.SendAsync(
+            return _client.SendAsync(
                 requestMessage,
-                Configuration.HttpCompletionOption ?? Client.Configuration.HttpCompletionOption ?? HttpCompletionOption.ResponseContentRead,
-                Configuration.CancellationToken ?? Client.Configuration.CancellationToken ?? CancellationToken.None);
+                _configuration.HttpCompletionOption ?? _client.Configuration.HttpCompletionOption ?? HttpCompletionOption.ResponseContentRead,
+                _configuration.CancellationToken ?? _client.Configuration.CancellationToken ?? CancellationToken.None);
         }
 
         protected async Task ProcessRequest(HttpRequestMessage requestMessage)
         {
-            foreach (var listener in Client.Listeners.Concat(Listeners))
+            foreach (var listener in _client.Listeners.Concat(_listeners))
             {
                 await listener.OnRequestMessage(requestMessage);
             }
@@ -54,29 +70,40 @@ namespace ThreeFourteen.FluentHttpClient
 
         protected async Task ProcessResponse(HttpResponseMessage responseMessage)
         {
-            foreach (var listener in Client.Listeners.Concat(Listeners))
+            foreach (var listener in _client.Listeners.Concat(_listeners))
             {
                 await listener.OnResponseMessage(responseMessage);
             }
 
-            if (Configuration.EnsureSuccessStatusCode ?? Client.Configuration.EnsureSuccessStatusCode ?? true)
+            if (_configuration.EnsureSuccessStatusCode ?? _client.Configuration.EnsureSuccessStatusCode ?? true)
                 responseMessage.EnsureSuccessStatusCode();
         }
 
         protected Task<HttpContent> Serialize<T>(T data)
         {
-            var serializer = Configuration.Serialization ??
-                             Client.Configuration.Serialization ??
+            var serializer = _configuration.Serialization ??
+                             _client.Configuration.Serialization ??
                              Serialization.Default;
             return serializer.Serialize(data);
         }
 
         protected Task<T> Deserialize<T>(HttpContent content)
         {
-            var serializer = Configuration.Serialization ??
-                             Client.Configuration.Serialization ??
+            var serializer = _configuration.Serialization ??
+                             _client.Configuration.Serialization ??
                              Serialization.Default;
             return serializer.Deserialize<T>(content);
+        }
+
+        protected string GetUri()
+        {
+            if (_parameters.Count == 0)
+                return _uri;
+
+            var parameters = string.Join("&",
+                _parameters.Select(p => $"{p.Key}={p.Value}"));
+
+            return $"{_uri}?{parameters}";
         }
     }
 }
