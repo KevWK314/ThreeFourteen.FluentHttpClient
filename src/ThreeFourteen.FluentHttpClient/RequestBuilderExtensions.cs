@@ -8,6 +8,21 @@ namespace ThreeFourteen.FluentHttpClient
 {
     public static class RequestBuilderExtensions
     {
+        public static RequestBuilder WithListener(this RequestBuilder requestBuilder, IMessageListener messageListener)
+        {
+            requestBuilder.AddMessageListener(messageListener);
+
+            return requestBuilder;
+        }
+
+        public static RequestBuilder WithListener<T>(this RequestBuilder requestBuilder) where T : IMessageListener, new()
+        {
+            var messageListener = new T();
+            requestBuilder.AddMessageListener(messageListener);
+
+            return requestBuilder;
+        }
+
         public static RequestBuilder OnRequest(this RequestBuilder requestBuilder, Action<HttpRequestMessage> onRequestMessage)
         {
             requestBuilder.AddMessageListener(new SimpleMessageListener(onRequestMessage, null));

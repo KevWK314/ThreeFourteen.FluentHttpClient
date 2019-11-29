@@ -34,7 +34,7 @@ namespace ThreeFourteen.FluentHttpClient
             return this;
         }
 
-        public RequestBuilder AddMessageListener(IMessageListener messageListener)
+        internal RequestBuilder AddMessageListener(IMessageListener messageListener)
         {
             if (messageListener == null) throw new ArgumentNullException(nameof(messageListener));
 

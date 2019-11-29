@@ -15,8 +15,8 @@ namespace ThreeFourteen.FluentHttpClient
 
         public static IFluentHttpClient WithListener<T>(this IFluentHttpClient fluentHttpClient) where T : IMessageListener, new()
         {
-            var listener = new T();
-            fluentHttpClient.Listeners.Add(listener);
+            var messageListener = new T();
+            fluentHttpClient.Listeners.Add(messageListener);
 
             return fluentHttpClient;
         }
