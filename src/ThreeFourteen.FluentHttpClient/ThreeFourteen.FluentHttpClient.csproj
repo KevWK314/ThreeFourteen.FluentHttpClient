@@ -11,6 +11,7 @@
     <packageProjectUrl>https://github.com/KevWK314/ThreeFourteen.FluentHttpClient</packageProjectUrl>
     <packageRequireLicenseAcceptance>false</packageRequireLicenseAcceptance>
     <packageTags>httpClient client fluent fluenthttpclient</packageTags>
+    <packageIconUrl>https://avatars1.githubusercontent.com/u/1942263</packageIconUrl>
     
   </PropertyGroup>
 
