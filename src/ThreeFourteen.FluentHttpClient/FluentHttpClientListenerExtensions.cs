@@ -34,5 +34,19 @@ namespace ThreeFourteen.FluentHttpClient
 
             return fluentHttpClient;
         }
+
+        public static IFluentHttpClient OnRequest(this IFluentHttpClient fluentHttpClient, Action<HttpRequestMessage> onRequestMessage)
+        {
+            fluentHttpClient.WithListener(new SimpleMessageListener(onRequestMessage, null));
+
+            return fluentHttpClient;
+        }
+
+        public static IFluentHttpClient OnResponse(this IFluentHttpClient fluentHttpClient, Action<HttpResponseMessage> onResponseMessage)
+        {
+            fluentHttpClient.WithListener(new SimpleMessageListener(null, onResponseMessage));
+
+            return fluentHttpClient;
+        }
     }
 }
