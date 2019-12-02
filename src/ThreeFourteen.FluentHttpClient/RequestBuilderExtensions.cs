@@ -60,7 +60,7 @@ namespace ThreeFourteen.FluentHttpClient
 
         public static RequestBuilder WithSerializer(this RequestBuilder requestBuilder, ISerialization serialization)
         {
-            requestBuilder.UpdateConfiguration(c => c.Serialization = serialization);
+            requestBuilder.Configure(c => c.Serialization = serialization);
 
             return requestBuilder;
         }

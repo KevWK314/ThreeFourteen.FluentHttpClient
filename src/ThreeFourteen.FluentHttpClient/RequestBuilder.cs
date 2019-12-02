@@ -28,7 +28,7 @@ namespace ThreeFourteen.FluentHttpClient
             _uri = uri;
         }
 
-        public RequestBuilder UpdateConfiguration(Action<FluentHttpClientConfiguration> update)
+        public RequestBuilder Configure(Action<FluentHttpClientConfiguration> update)
         {
             update?.Invoke(_configuration);
             return this;
