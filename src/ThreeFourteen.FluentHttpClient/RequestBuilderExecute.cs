@@ -1,19 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ThreeFourteen.FluentHttpClient
 {
     public partial class RequestBuilder
     {
-        public virtual async Task<HttpResponse> ExecuteAsync()
+        public virtual Task<HttpResponse> ExecuteAsync()
+        {
+            return ExecuteAsync(CancellationToken.None);
+        }
+
+        public virtual async Task<HttpResponse> ExecuteAsync(CancellationToken cancellationToken)
         {
             using (var requestMessage = new HttpRequestMessage(_httpMethod, GetUri()))
             {
                 await ProcessRequest(requestMessage);
 
-                using (var responseMessage = await SendAsync(requestMessage))
+                using (var responseMessage = await SendAsync(requestMessage, cancellationToken))
                 {
                     await ProcessResponse(responseMessage);
 
@@ -22,13 +28,18 @@ namespace ThreeFourteen.FluentHttpClient
             }
         }
 
-        public virtual async Task<HttpResponse<TResponse>> ExecuteAsync<TResponse>()
+        public virtual Task<HttpResponse<TResponse>> ExecuteAsync<TResponse>()
+        {
+            return ExecuteAsync<TResponse>(CancellationToken.None);
+        }
+
+        public virtual async Task<HttpResponse<TResponse>> ExecuteAsync<TResponse>(CancellationToken cancellationToken)
         {
             using (var requestMessage = new HttpRequestMessage(_httpMethod, GetUri()))
             {
                 await ProcessRequest(requestMessage);
 
-                using (var responseMessage = await SendAsync(requestMessage))
+                using (var responseMessage = await SendAsync(requestMessage, cancellationToken))
                 {
                     await ProcessResponse(responseMessage);
 
@@ -39,7 +50,12 @@ namespace ThreeFourteen.FluentHttpClient
             }
         }
 
-        public async Task<HttpResponse<TResponse>> ExecuteAsync<TRequest, TResponse>(TRequest request)
+        public virtual Task<HttpResponse<TResponse>> ExecuteAsync<TRequest, TResponse>(TRequest request)
+        {
+            return ExecuteAsync<TRequest, TResponse>(request, CancellationToken.None);
+        }
+
+        public async Task<HttpResponse<TResponse>> ExecuteAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken)
         {
             using (var requestMessage = new HttpRequestMessage(_httpMethod, GetUri()))
             {
@@ -47,7 +63,7 @@ namespace ThreeFourteen.FluentHttpClient
 
                 await ProcessRequest(requestMessage);
 
-                using (var responseMessage = await SendAsync(requestMessage))
+                using (var responseMessage = await SendAsync(requestMessage, cancellationToken))
                 {
                     await ProcessResponse(responseMessage);
 

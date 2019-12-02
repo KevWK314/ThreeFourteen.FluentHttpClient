@@ -52,12 +52,12 @@ namespace ThreeFourteen.FluentHttpClient
             return this;
         }
 
-        protected Task<HttpResponseMessage> SendAsync(HttpRequestMessage requestMessage)
+        protected Task<HttpResponseMessage> SendAsync(HttpRequestMessage requestMessage, CancellationToken cancellationToken)
         {
             return _client.SendAsync(
                 requestMessage,
                 _configuration.HttpCompletionOption ?? _client.Configuration.HttpCompletionOption ?? HttpCompletionOption.ResponseContentRead,
-                _configuration.CancellationToken ?? _client.Configuration.CancellationToken ?? CancellationToken.None);
+                cancellationToken);
         }
 
         protected async Task ProcessRequest(HttpRequestMessage requestMessage)

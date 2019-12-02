@@ -4,13 +4,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
 
     <packageId>ThreeFourteen.FluentHttpClient.Factory</packageId>
-    <description>A comfy wrapper around HttpClient and HttpClientFactory</description>
+    <description>A comfy wrapper around HttpClientFactory</description>
     <title>Fluent HttpClient Factory</title>
     <authors>Kevin Kavanagh</authors>
     <packageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</packageLicenseUrl>
     <packageProjectUrl>https://github.com/KevWK314/ThreeFourteen.FluentHttpClient</packageProjectUrl>
     <packageRequireLicenseAcceptance>false</packageRequireLicenseAcceptance>
-    <packageTags>httpClient client fluent httpclientfactory fluenthttpclient</packageTags>
+    <packageTags>httpClient httpclientfactory fluenthttpclient fluenthttp</packageTags>
     <packageIconUrl>https://avatars1.githubusercontent.com/u/1942263</packageIconUrl>
     
   </PropertyGroup>

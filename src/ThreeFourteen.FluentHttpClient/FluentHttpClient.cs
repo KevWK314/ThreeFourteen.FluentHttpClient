@@ -28,7 +28,7 @@ namespace ThreeFourteen.FluentHttpClient
 
         public IList<IMessageListener> Listeners { get; } = new List<IMessageListener>();
 
-        public Task<HttpResponseMessage> SendAsync(HttpRequestMessage requestMessage, HttpCompletionOption completionOption, CancellationToken cancellationToken)
+        public virtual Task<HttpResponseMessage> SendAsync(HttpRequestMessage requestMessage, HttpCompletionOption completionOption, CancellationToken cancellationToken)
         {
             return _client.SendAsync(requestMessage, completionOption, cancellationToken);
         }
