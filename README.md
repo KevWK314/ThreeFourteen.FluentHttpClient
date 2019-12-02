@@ -100,10 +100,6 @@ The AddTransientHttpErrorPolicy will allow you to define how failures are handle
 
 [Polly](https://github.com/App-vNext/Polly) is a .NET resilience and transient-fault-handling library. I would definitely recommend using Polly if you're writing a commercial service/application and even more so if you're writing microservices. Something like [Circuit Breakers](https://martinfowler.com/bliki/CircuitBreaker.html) can be invaluable.
 
-### All Options
-
-The HttpClientFactory allows you to use the same code you would write in an ASPNetCore app but "borrowing" the same classes and extension methods. Meaning you can use HttpClientFactory anywhere, you don't need your project to be an ASPNetCore app (i.e. Console App). But either way, you'll be doing things the "right" way.
-
 ## P.S. 
 
 This is very much a work in progress. Please feel free to put forward any changes you think will add value. If you find yourself repeating the same thing over and over, it might just belong here.
