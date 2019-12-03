@@ -34,6 +34,7 @@ namespace ThreeFourteen.FluentHttpClient.Sample.Console
             var postResponse = await client
                 .Post("api/users")
                 .WithHeader("User-Agent", "TheComputer")
+                .Configure(c => c.HttpCompletionOption = HttpCompletionOption.ResponseHeadersRead)
                 .OnRequest(r => LogRequestDetails(client.Name, r))
                 .OnResponse(r => LogResponseDetails(client.Name, r))
                 .ExecuteAsync<CreateUserRequest, CreateUserResponse>(request);

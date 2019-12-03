@@ -17,8 +17,9 @@ namespace ThreeFourteen.FluentHttpClient.Test
                 .SetResponseContent(new Person("James"));
 
             var listener = new MessageListener();
-            var response = await new FluentHttpClient("Test", httpClientTester.Client)
-                .WithListener(listener)
+            var client = new FluentHttpClient("Test", httpClientTester.Client)
+                .WithListener(listener);
+            var response = await client
                 .Get("url")
                 .ExecuteAsync<Person>();
 
