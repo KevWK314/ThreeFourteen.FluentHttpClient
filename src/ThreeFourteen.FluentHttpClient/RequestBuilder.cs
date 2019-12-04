@@ -89,6 +89,9 @@ namespace ThreeFourteen.FluentHttpClient
 
         protected Task<T> Deserialize<T>(HttpContent content)
         {
+            if(content == null)
+                return Task.FromResult(default(T));
+
             var serializer = _configuration.Serialization ??
                              _client.Configuration.Serialization ??
                              Serialization.Default;

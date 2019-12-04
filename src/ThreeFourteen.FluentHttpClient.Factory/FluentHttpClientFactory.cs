@@ -5,8 +5,8 @@ namespace ThreeFourteen.FluentHttpClient.Factory
 {
     public interface IFluentHttpClientFactory
     {
-        FluentHttpClient Create(string name);
-        FluentHttpClient Create(string name, FluentHttpClientConfiguration configuration);
+        FluentHttpClient CreateClient(string name);
+        FluentHttpClient CreateClient(string name, FluentHttpClientConfiguration configuration);
     }
 
     public class FluentHttpClientFactory : IFluentHttpClientFactory
@@ -18,14 +18,20 @@ namespace ThreeFourteen.FluentHttpClient.Factory
             _httpClientFactory = httpClientFactory;
         }
 
-        public FluentHttpClient Create(string name)
+        public FluentHttpClient CreateClient(string name)
         {
             return new FluentHttpClient(name, _httpClientFactory.CreateClient(name), null);
         }
 
-        public FluentHttpClient Create(string name, FluentHttpClientConfiguration configuration)
+        public FluentHttpClient CreateClient(string name, FluentHttpClientConfiguration configuration)
         {
             return new FluentHttpClient(name, _httpClientFactory.CreateClient(name), configuration);
+        }
+
+        public static IFluentHttpClientFactory Create<TBuilder>() where TBuilder : IFluentHttpClientFactoryBuilder, new()
+        {
+            var builder = new TBuilder();
+            return Create(builder);
         }
 
         public static IFluentHttpClientFactory Create(IFluentHttpClientFactoryBuilder builder)

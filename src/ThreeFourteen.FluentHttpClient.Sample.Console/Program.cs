@@ -19,7 +19,7 @@ namespace ThreeFourteen.FluentHttpClient.Sample.Console
         static async Task TryItOut()
         {
             var factory = FluentHttpClientFactory.Create(new ClientFactory());
-            var client = factory.Create("Reqres");
+            var client = factory.CreateClient("Reqres");
 
             var getResponse = await client
                 .Get("api/users/2")
