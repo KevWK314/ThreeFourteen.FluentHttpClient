@@ -8,23 +8,24 @@ using ThreeFourteen.FluentHttpClient.Serialize;
 using System.Net.Http;
 using System.Threading;
 using System.Net;
+using ThreeFourteen.FluentHttpClient.Test.Tools;
 
 namespace ThreeFourteen.FluentHttpClient.Test
 {
-    public class ConfigurationTests
+    public class ClientOptionsTests
     {
-        private IFluentHttpClient _client;
-        private ISerialization _serialization;
-        private HttpResponseMessage _httpResponseMessage;
+        private readonly ISerialization _serialization;
+        private readonly HttpResponseMessage _httpResponseMessage;
+        private readonly FluentHttpClientOptions _options;
+        private readonly HttpClientTester _testHttpClient;
+        private readonly TestClient _client;
 
-        public ConfigurationTests()
+        public ClientOptionsTests()
         {
             _serialization = Substitute.For<ISerialization>();
-            _client = Substitute.For<IFluentHttpClient>();
-
-            _httpResponseMessage = new HttpResponseMessage();
-            _client.SendAsync(Arg.Any<HttpRequestMessage>(), Arg.Any<HttpCompletionOption>(), Arg.Any<CancellationToken>())
-                .Returns(c => Task.FromResult(_httpResponseMessage));
+            _options = new FluentHttpClientOptions();
+            _testHttpClient = new HttpClientTester();
+            _client = new TestClient("Test", _testHttpClient.Client, _options);
         }
 
         [Fact]
@@ -34,18 +35,18 @@ namespace ThreeFourteen.FluentHttpClient.Test
 
             response?.StatusCode.Should().Be(200);
 
-            await _client.Received(1).SendAsync(Arg.Any<HttpRequestMessage>(), HttpCompletionOption.ResponseContentRead, Arg.Any<CancellationToken>());
+            _client.CompletionOption.Should().Be(HttpCompletionOption.ResponseContentRead);
         }
 
         [Fact]
         public async Task ClientConfig_WhenCompletionOptionsSet_ShouldBeUsedWhenSending()
         {
-            _client.Configuration.HttpCompletionOption = HttpCompletionOption.ResponseHeadersRead;
+            _options.HttpCompletionOption = HttpCompletionOption.ResponseHeadersRead;
             var response = await _client.Get("url").ExecuteAsync();
 
             response?.StatusCode.Should().Be(200);
 
-            await _client.Received(1).SendAsync(Arg.Any<HttpRequestMessage>(), HttpCompletionOption.ResponseHeadersRead, Arg.Any<CancellationToken>());
+            _client.CompletionOption.Should().Be(HttpCompletionOption.ResponseHeadersRead);
         }
 
         [Fact]
@@ -57,13 +58,13 @@ namespace ThreeFourteen.FluentHttpClient.Test
 
             response?.StatusCode.Should().Be(200);
 
-            await _client.Received(1).SendAsync(Arg.Any<HttpRequestMessage>(), HttpCompletionOption.ResponseHeadersRead, Arg.Any<CancellationToken>());
+            _client.CompletionOption.Should().Be(HttpCompletionOption.ResponseHeadersRead);
         }
 
         [Fact]
         public async Task ClientConfig_WhenSerialisationSet_ShouldBeUsedWhenSending()
         {
-            _client.Configuration.Serialization = _serialization;
+            _options.Serialization = _serialization;
             _serialization.Deserialize<Person>(Arg.Any<HttpContent>()).Returns(Task.FromResult(new Person("Lisa")));
 
             var response = await _client.Get("url").ExecuteAsync<Person>();
@@ -88,7 +89,7 @@ namespace ThreeFourteen.FluentHttpClient.Test
         [Fact]
         public async Task Config_WhenEnsureSuccessNotSet_ShouldDefault()
         {
-            _httpResponseMessage.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+            _testHttpClient.SetResponseStatusCode(HttpStatusCode.InternalServerError);
 
             var ex = await Assert.ThrowsAsync<HttpRequestException>(() => _client.Get("url").ExecuteAsync());
         }
@@ -96,8 +97,8 @@ namespace ThreeFourteen.FluentHttpClient.Test
         [Fact]
         public async Task ClientConfig_WhenEnsureSuccessSet_ShouldUseInResponse()
         {
-            _httpResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
-            _client.Configuration.EnsureSuccessStatusCode = false;
+            _testHttpClient.SetResponseStatusCode(HttpStatusCode.InternalServerError);
+            _options.EnsureSuccessStatusCode = false;
 
             var result = await _client.Get("url").ExecuteAsync();
 
@@ -107,13 +108,31 @@ namespace ThreeFourteen.FluentHttpClient.Test
         [Fact]
         public async Task RequestConfig_WhenEnsureSuccessSet_ShouldUseInResponse()
         {
-            _httpResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
+            _testHttpClient.SetResponseStatusCode(HttpStatusCode.InternalServerError);
 
             var result = await _client.Get("url")
                 .Configure(c => c.EnsureSuccessStatusCode = false)
                 .ExecuteAsync();
 
             result.StatusCode.Should().Be(500);
+        }
+
+        private class TestClient : FluentHttpClient
+        {
+            public HttpRequestMessage RequestMessage { get; private set; }
+            public HttpCompletionOption CompletionOption { get; private set; }
+
+            public TestClient(string name, HttpClient client, FluentHttpClientOptions options)
+                : base(name, client, options)
+            {
+            }
+
+            public override Task<HttpResponseMessage> SendAsync(HttpRequestMessage requestMessage, HttpCompletionOption completionOption, CancellationToken cancellationToken)
+            {
+                RequestMessage = requestMessage;
+                CompletionOption = completionOption;
+                return base.SendAsync(requestMessage, completionOption, cancellationToken);
+            }
         }
     }
 }

@@ -17,8 +17,7 @@ namespace ThreeFourteen.FluentHttpClient.Test
                 .SetResponseContent(new Person("James"));
 
             var listener = new MessageListener();
-            var client = new FluentHttpClient("Test", httpClientTester.Client)
-                .WithListener(listener);
+            var client = new FluentHttpClient("Test", httpClientTester.Client, listener);
             var response = await client
                 .Get("url")
                 .ExecuteAsync<Person>();
@@ -34,9 +33,10 @@ namespace ThreeFourteen.FluentHttpClient.Test
             var httpClientTester = new HttpClientTester()
                 .SetResponseContent(new Person("James"));
 
-            var response = await new FluentHttpClient("Test", httpClientTester.Client)
-                .WithListener<MessageListener>()
-                .Get("url")
+            var client = new FluentHttpClientBuilder("Test", httpClientTester.Client)
+                .AddMessageListener<MessageListener>()
+                .Build();
+            var response = await client.Get("url")
                 .ExecuteAsync<Person>();
 
             response?.StatusCode.Should().Be(200);
@@ -51,10 +51,11 @@ namespace ThreeFourteen.FluentHttpClient.Test
             HttpRequestMessage requestMessage = null;
             HttpResponseMessage responseMessage = null;
 
-            var response = await new FluentHttpClient("Test", httpClientTester.Client)
+            var client = new FluentHttpClientBuilder("Test", httpClientTester.Client)
                 .OnRequest(r => requestMessage = r)
                 .OnResponse(r => responseMessage = r)
-                .Get("url")
+                .Build();
+            var response = await client.Get("url")
                 .ExecuteAsync<Person>();
 
             response?.StatusCode.Should().Be(200);
@@ -71,10 +72,11 @@ namespace ThreeFourteen.FluentHttpClient.Test
             HttpRequestMessage requestMessage = null;
             HttpResponseMessage responseMessage = null;
 
-            var response = await new FluentHttpClient("Test", httpClientTester.Client)
+            var client = new FluentHttpClientBuilder("Test", httpClientTester.Client)
                 .OnRequest(r => { requestMessage = r; return Task.CompletedTask; })
                 .OnResponse(r => { responseMessage = r; return Task.CompletedTask; })
-                .Get("url")
+               .Build();
+            var response = await client.Get("url")
                 .ExecuteAsync<Person>();
 
             response?.StatusCode.Should().Be(200);

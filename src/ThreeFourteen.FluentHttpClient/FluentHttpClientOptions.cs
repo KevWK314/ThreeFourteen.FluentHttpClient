@@ -3,7 +3,7 @@ using ThreeFourteen.FluentHttpClient.Serialize;
 
 namespace ThreeFourteen.FluentHttpClient
 {
-    public class FluentHttpClientConfiguration
+    public class FluentHttpClientOptions
     {
         public virtual ISerialization Serialization { get; set; }
         public virtual bool? EnsureSuccessStatusCode { get; set; }

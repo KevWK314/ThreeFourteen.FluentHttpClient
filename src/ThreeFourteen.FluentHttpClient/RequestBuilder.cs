@@ -11,15 +11,15 @@ namespace ThreeFourteen.FluentHttpClient
 {
     public partial class RequestBuilder
     {
-        private readonly IFluentHttpClient _client;
+        private readonly FluentHttpClient _client;
         private readonly string _uri;
         private readonly HttpMethod _httpMethod;
 
-        private readonly FluentHttpClientConfiguration _configuration = new FluentHttpClientConfiguration();
+        private readonly FluentHttpClientOptions _options = new FluentHttpClientOptions();
         private readonly List<IMessageListener> _listeners = new List<IMessageListener>();
         private readonly Dictionary<string, string> _parameters = new Dictionary<string, string>();
 
-        public RequestBuilder(IFluentHttpClient client, string uri, HttpMethod httpMethod)
+        public RequestBuilder(FluentHttpClient client, string uri, HttpMethod httpMethod)
         {
             if (client == null) throw new ArgumentNullException(nameof(client));
 
@@ -28,9 +28,9 @@ namespace ThreeFourteen.FluentHttpClient
             _uri = uri;
         }
 
-        public RequestBuilder Configure(Action<FluentHttpClientConfiguration> update)
+        public RequestBuilder Configure(Action<FluentHttpClientOptions> configure)
         {
-            update?.Invoke(_configuration);
+            configure?.Invoke(_options);
             return this;
         }
 
@@ -56,13 +56,13 @@ namespace ThreeFourteen.FluentHttpClient
         {
             return _client.SendAsync(
                 requestMessage,
-                _configuration.HttpCompletionOption ?? _client.Configuration.HttpCompletionOption ?? HttpCompletionOption.ResponseContentRead,
+                _options.HttpCompletionOption ?? _client.GetOptions().HttpCompletionOption ?? HttpCompletionOption.ResponseContentRead,
                 cancellationToken);
         }
 
         protected async Task ProcessRequest(HttpRequestMessage requestMessage)
         {
-            foreach (var listener in _client.Listeners.Concat(_listeners))
+            foreach (var listener in _client.GetListeners().Concat(_listeners))
             {
                 await listener.OnRequestMessage(requestMessage);
             }
@@ -70,19 +70,19 @@ namespace ThreeFourteen.FluentHttpClient
 
         protected async Task ProcessResponse(HttpResponseMessage responseMessage)
         {
-            foreach (var listener in _client.Listeners.Concat(_listeners))
+            foreach (var listener in _client.GetListeners().Concat(_listeners))
             {
                 await listener.OnResponseMessage(responseMessage);
             }
 
-            if (_configuration.EnsureSuccessStatusCode ?? _client.Configuration.EnsureSuccessStatusCode ?? true)
+            if (_options.EnsureSuccessStatusCode ?? _client.GetOptions().EnsureSuccessStatusCode ?? true)
                 responseMessage.EnsureSuccessStatusCode();
         }
 
         protected Task<HttpContent> Serialize<T>(T data)
         {
-            var serializer = _configuration.Serialization ??
-                             _client.Configuration.Serialization ??
+            var serializer = _options.Serialization ??
+                             _client.GetOptions().Serialization ??
                              Serialization.Default;
             return serializer.Serialize(data);
         }
@@ -92,8 +92,8 @@ namespace ThreeFourteen.FluentHttpClient
             if(content == null)
                 return Task.FromResult(default(T));
 
-            var serializer = _configuration.Serialization ??
-                             _client.Configuration.Serialization ??
+            var serializer = _options.Serialization ??
+                             _client.GetOptions().Serialization ??
                              Serialization.Default;
             return serializer.Deserialize<T>(content);
         }

@@ -6,7 +6,7 @@ namespace ThreeFourteen.FluentHttpClient.Factory
     public interface IFluentHttpClientFactory
     {
         FluentHttpClient CreateClient(string name);
-        FluentHttpClient CreateClient(string name, FluentHttpClientConfiguration configuration);
+        FluentHttpClient CreateClient(string name, FluentHttpClientOptions configuration);
     }
 
     public class FluentHttpClientFactory : IFluentHttpClientFactory
@@ -20,10 +20,10 @@ namespace ThreeFourteen.FluentHttpClient.Factory
 
         public FluentHttpClient CreateClient(string name)
         {
-            return new FluentHttpClient(name, _httpClientFactory.CreateClient(name), null);
+            return new FluentHttpClient(name, _httpClientFactory.CreateClient(name));
         }
 
-        public FluentHttpClient CreateClient(string name, FluentHttpClientConfiguration configuration)
+        public FluentHttpClient CreateClient(string name, FluentHttpClientOptions configuration)
         {
             return new FluentHttpClient(name, _httpClientFactory.CreateClient(name), configuration);
         }
