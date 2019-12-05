@@ -20,7 +20,7 @@ jobs:
     - name: Test
       run: dotnet test
     - name: Pack
-      run: dotnet pack ./ThreeFourteen.FluentHttpClient.sln --configuration Release -o NuGetPackages /p:Version=${GITHUB_REF#refs/tags/}
+      run: dotnet pack ./ThreeFourteen.FluentHttpClient.sln --configuration Release -o ./NuGetPackages /p:Version=${GITHUB_REF#refs/tags/}
     - name: Publish
-      run: dotnet nuget push ./src/ThreeFourteen.FluentHttpClient/NuGetPackages/* -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ./NuGetPackages/* -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
 
