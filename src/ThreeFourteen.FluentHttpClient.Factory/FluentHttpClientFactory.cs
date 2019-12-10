@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ThreeFourteen.FluentHttpClient.Factory
@@ -6,7 +7,7 @@ namespace ThreeFourteen.FluentHttpClient.Factory
     public interface IFluentHttpClientFactory
     {
         FluentHttpClient CreateClient(string name);
-        FluentHttpClient CreateClient(string name, FluentHttpClientOptions configuration);
+        FluentHttpClient CreateClient(string name, Action<FluentHttpClientBuilder> build);
     }
 
     public class FluentHttpClientFactory : IFluentHttpClientFactory
@@ -20,12 +21,16 @@ namespace ThreeFourteen.FluentHttpClient.Factory
 
         public FluentHttpClient CreateClient(string name)
         {
-            return new FluentHttpClient(name, _httpClientFactory.CreateClient(name));
+            return CreateClient(name, null);
         }
 
-        public FluentHttpClient CreateClient(string name, FluentHttpClientOptions configuration)
+        public FluentHttpClient CreateClient(string name, Action<FluentHttpClientBuilder> build)
         {
-            return new FluentHttpClient(name, _httpClientFactory.CreateClient(name), configuration);
+            var builder = new FluentHttpClientBuilder(name, _httpClientFactory.CreateClient(name));
+            
+            build?.Invoke(builder);
+
+            return builder.Build();
         }
 
         public static IFluentHttpClientFactory Create<TBuilder>() where TBuilder : IFluentHttpClientFactoryBuilder, new()

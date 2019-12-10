@@ -15,7 +15,6 @@ namespace ThreeFourteen.FluentHttpClient.Test
     public class ClientOptionsTests
     {
         private readonly ISerialization _serialization;
-        private readonly HttpResponseMessage _httpResponseMessage;
         private readonly FluentHttpClientOptions _options;
         private readonly HttpClientTester _testHttpClient;
         private readonly TestClient _client;

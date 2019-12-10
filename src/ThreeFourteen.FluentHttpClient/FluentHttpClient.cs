@@ -41,9 +41,9 @@ namespace ThreeFourteen.FluentHttpClient
 
         public string Name { get; }
 
-        protected virtual FluentHttpClientOptions Options { get; }
+        protected FluentHttpClientOptions Options { get; }
 
-        protected virtual List<IMessageListener> Listeners { get; } = new List<IMessageListener>();
+        protected List<IMessageListener> Listeners { get; } = new List<IMessageListener>();
 
         public virtual Task<HttpResponseMessage> SendAsync(HttpRequestMessage requestMessage, HttpCompletionOption completionOption, CancellationToken cancellationToken)
         {
