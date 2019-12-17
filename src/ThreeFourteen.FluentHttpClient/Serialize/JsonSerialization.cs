@@ -19,22 +19,12 @@ namespace ThreeFourteen.FluentHttpClient.Serialize
             _serializer = JsonSerializer.Create(settings);
         }
 
-        public virtual async Task<HttpContent> Serialize<TRequest>(TRequest request)
+        public virtual Task<HttpContent> Serialize<TRequest>(TRequest request)
         {
-            using (var memoryStream = new MemoryStream())
-            using (StreamWriter sw = new StreamWriter(memoryStream))
-            using (JsonWriter writer = new JsonTextWriter(sw))
-            {
-                var streamContent = new StreamContent(memoryStream);
-                streamContent.Headers.Add(Headers.Key.ContentType, Headers.Values.ContentType.Json);
+            HttpContent content = new JsonHttpContent<TRequest>(request, _serializer);
+            content.Headers.Add(Headers.Key.ContentType, Headers.Values.ContentType.Json);
 
-                _serializer.Serialize(writer, request);
-                writer.Flush();
-                memoryStream.Position = 0;
-
-                await streamContent.LoadIntoBufferAsync();
-                return streamContent;
-            }
+            return Task.FromResult(content);
         }
 
         public virtual async Task<TResponse> Deserialize<TResponse>(HttpContent responseContent)
