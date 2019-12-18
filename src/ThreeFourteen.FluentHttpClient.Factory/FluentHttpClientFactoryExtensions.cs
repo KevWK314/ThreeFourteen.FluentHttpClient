@@ -5,7 +5,7 @@ namespace ThreeFourteen.FluentHttpClient.Factory
 {
     public static class FluentHttpClientFactoryExtensions
     {
-        public static ServiceCollection AddFluentHttpClient(this ServiceCollection services)
+        public static IServiceCollection AddFluentHttpClient(this IServiceCollection services)
         {
             services.AddHttpClient();
             services.AddSingleton<IFluentHttpClientFactory>(sp => new FluentHttpClientFactory(sp.GetService<IHttpClientFactory>()));
@@ -13,7 +13,7 @@ namespace ThreeFourteen.FluentHttpClient.Factory
             return services;
         }
 
-        public static ServiceCollection AddFluentHttpClient<TBuilder>(this ServiceCollection services) where TBuilder : IFluentHttpClientFactoryBuilder, new()
+        public static IServiceCollection AddFluentHttpClient<TBuilder>(this IServiceCollection services) where TBuilder : IFluentHttpClientFactoryBuilder, new()
         {
             services.AddHttpClient();
 
@@ -24,7 +24,7 @@ namespace ThreeFourteen.FluentHttpClient.Factory
             return services;
         }
 
-        public static ServiceCollection AddFluentHttpClient(this ServiceCollection services, IFluentHttpClientFactoryBuilder builder)
+        public static IServiceCollection AddFluentHttpClient(this IServiceCollection services, IFluentHttpClientFactoryBuilder builder)
         {
             services.AddHttpClient();
             
