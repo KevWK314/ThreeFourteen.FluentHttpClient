@@ -8,8 +8,8 @@ namespace ThreeFourteen.FluentHttpClient
     {
         private readonly string _name;
         private readonly HttpClient _client;
-        private FluentHttpClientOptions _options = new FluentHttpClientOptions();
-        private List<IMessageListener> _listeners = new List<IMessageListener>();
+        private readonly FluentHttpClientOptions _options = new FluentHttpClientOptions();
+        private readonly List<IMessageListener> _listeners = new List<IMessageListener>();
 
         public FluentHttpClientBuilder(string name, HttpClient client)
         {

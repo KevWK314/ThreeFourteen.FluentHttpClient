@@ -11,7 +11,7 @@ namespace ThreeFourteen.FluentHttpClient.Test
 {
     public class JsonSerializationTests
     {
-        private JsonSerialization _sut;
+        private readonly JsonSerialization _sut;
 
         public JsonSerializationTests()
         {

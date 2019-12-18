@@ -2,8 +2,10 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Polly;
 using ThreeFourteen.FluentHttpClient.Factory;
+using ThreeFourteen.FluentHttpClient.Serialize;
 
 namespace ThreeFourteen.FluentHttpClient.Sample.Console
 {
@@ -19,7 +21,7 @@ namespace ThreeFourteen.FluentHttpClient.Sample.Console
         static async Task TryItOut()
         {
             var factory = FluentHttpClientFactory.Create(new ClientFactory());
-            var client = factory.CreateClient("Reqres", 
+            var client = factory.CreateClient("Reqres",
                 b => b.OnRequest(r => r.Headers.Add("User-Agent", "TheClient")));
 
             var getResponse = await client
@@ -31,13 +33,12 @@ namespace ThreeFourteen.FluentHttpClient.Sample.Console
             System.Console.WriteLine($"Get: {getResponse.Result}");
             System.Console.WriteLine();
 
+            var settings = new JsonSerializerSettings { Formatting = Formatting.Indented };
             var request = new CreateUserRequest { Name = "Tim", Job = "TheBoss" };
             var postResponse = await client
                 .Post("api/users")
                 .WithHeader("User-Agent", "TheComputer")
-                .Configure(c => c.HttpCompletionOption = HttpCompletionOption.ResponseHeadersRead)
-                .OnRequest(r => LogRequestDetails(client.Name, r))
-                .OnResponse(r => LogResponseDetails(client.Name, r))
+                .Configure(c => c.Serialization = new JsonSerialization(settings))
                 .ExecuteAsync<CreateUserRequest, CreateUserResponse>(request);
 
             System.Console.WriteLine($"Post: {postResponse.Result}");
@@ -45,7 +46,7 @@ namespace ThreeFourteen.FluentHttpClient.Sample.Console
 
         static async Task LogRequestDetails(string name, HttpRequestMessage requestMessage)
         {
-            if (requestMessage?.Content == null) 
+            if (requestMessage?.Content == null)
                 return;
 
             requestMessage.Content.LoadIntoBufferAsync().Wait();
@@ -65,6 +66,20 @@ namespace ThreeFourteen.FluentHttpClient.Sample.Console
             var contentSize = byteArray.Length / (double)1024;
 
             System.Console.WriteLine($"{name} Response: status={responseMessage.StatusCode}, content={contentSize:0.00}kb");
+        }
+
+        static void DocumentationExamples()
+        {
+            //var httpClient = new HttpClient { BaseAddress = new Uri("https://example") };
+            //var client = new FluentHttpClientBuilder("BuilderExample", httpClient)
+            //    .Configure(o => o.HttpCompletionOption = HttpCompletionOption.ResponseHeadersRead)
+            //    .OnRequest(r => r.Headers.Add("User-Agent", "Computer"))
+            //    .Build();
+
+            //var factory = FluentHttpClientFactory.Create(new ClientFactory());
+            //var client = factory.CreateClient("NewClient",
+            //    b => b.Configure(r => r.EnsureSuccessStatusCode = false)
+            //        .AddMessageListener<MessageListener>());
         }
     }
 

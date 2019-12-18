@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FluentAssertions;
 using ThreeFourteen.FluentHttpClient.Test.Model;
 using NSubstitute;
@@ -69,7 +68,7 @@ namespace ThreeFourteen.FluentHttpClient.Test
             var response = await _client.Get("url").ExecuteAsync<Person>();
 
             response?.StatusCode.Should().Be(200);
-            response.Result?.Name.Should().Be("Lisa");
+            response?.Result?.Name.Should().Be("Lisa");
         }
 
         [Fact]
@@ -82,7 +81,7 @@ namespace ThreeFourteen.FluentHttpClient.Test
                 .ExecuteAsync<Person>();
 
             response?.StatusCode.Should().Be(200);
-            response.Result?.Name.Should().Be("Lisa");
+            response?.Result?.Name.Should().Be("Lisa");
         }
 
         [Fact]
@@ -90,7 +89,7 @@ namespace ThreeFourteen.FluentHttpClient.Test
         {
             _testHttpClient.SetResponseStatusCode(HttpStatusCode.InternalServerError);
 
-            var ex = await Assert.ThrowsAsync<HttpRequestException>(() => _client.Get("url").ExecuteAsync());
+            await Assert.ThrowsAsync<HttpRequestException>(() => _client.Get("url").ExecuteAsync());
         }
 
         [Fact]
@@ -116,7 +115,7 @@ namespace ThreeFourteen.FluentHttpClient.Test
             result.StatusCode.Should().Be(500);
         }
 
-        private class TestClient : FluentHttpClient
+        public class TestClient : FluentHttpClient
         {
             public HttpRequestMessage RequestMessage { get; private set; }
             public HttpCompletionOption CompletionOption { get; private set; }

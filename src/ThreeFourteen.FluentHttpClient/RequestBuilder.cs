@@ -21,11 +21,9 @@ namespace ThreeFourteen.FluentHttpClient
 
         public RequestBuilder(FluentHttpClient client, string uri, HttpMethod httpMethod)
         {
-            if (client == null) throw new ArgumentNullException(nameof(client));
-
-            _httpMethod = httpMethod;
-            _client = client;
+            _client = client ?? throw new ArgumentNullException(nameof(client));
             _uri = uri;
+            _httpMethod = httpMethod;
         }
 
         public RequestBuilder Configure(Action<FluentHttpClientOptions> configure)

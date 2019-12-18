@@ -13,7 +13,7 @@ namespace ThreeFourteen.FluentHttpClient.Test.Tools
 
         public HttpRequestMessage RequestMessage { get; private set; }
 
-        public HttpClient Client { get; private set; }
+        public HttpClient Client { get; }
 
         public HttpClientTester()
         {

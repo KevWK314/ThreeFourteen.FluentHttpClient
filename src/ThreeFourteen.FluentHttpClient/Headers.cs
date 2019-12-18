@@ -5,7 +5,6 @@
         public static class Key
         {
             public const string ContentType = "Content-Type";
-            public const string Accept = "Accept";
         }
 
         public static class Values
