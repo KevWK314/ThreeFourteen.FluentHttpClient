@@ -87,6 +87,19 @@ var client = factory.CreateClient("NewClient",
 
 In the example above the CreateClient call will get the HttpClient from ClientFactory with the name of "NewClient". Ideally you would have pre-configured the HttpClient "NewClient".
 
+## AspNetCore
+
+There are extension methods in the Factory library that will allow you to add IFluentHttpClientFactory. It will be registered as a singleton service and can be injected wherever you need it. It should be called in Startup ConfigureServices.
+
+```c#
+public void ConfigureServices(IServiceCollection services)
+{
+    services
+        .AddFluentHttpClient<ClientFactory>()
+        ...
+}
+```
+
 ### Factory Builder
 
 The Factory does allow for a "builder" to be injected. The factory will then provide a [ServiceCollection](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.servicecollection) which when used in conjunction with some handy Microsoft (and other) extension methods can build your clients, ready for use.
