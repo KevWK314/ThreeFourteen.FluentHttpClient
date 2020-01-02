@@ -37,7 +37,7 @@ var getResponse = await client
     .OnResponse(r => LogResponseDetails(client.Name, r))
     .ExecuteAsync<User>();
 
-// POST Exaple
+// POST Example
 var postResponse = await client
     .Post("api/users")
     .WithHeader("User-Agent", "TheComputer")
